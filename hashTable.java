@@ -13,34 +13,60 @@ class hashArray {
     }
 
     protected void place(String str) { //function to put information into hash array
-
+        String bi = getNumbers(str);
+        int hash = 
     }
 
-    protected int getNumbers(String str) {
-        int i = 0;
+    protected String getNumbers(String str) {
+        String nums = "";
+        for (int i = 0; i < str.length(); i++) {
+            int a = (int)(str.charAt(i));
+            nums = nums + String.valueOf(a);
+        }
+        return nums;
     }
 
-    private int hashString(String str) {
-        //turn string into numbers
-        String bstring = Integer.toBinaryString(getNumbers(str));
+    protected String[] splitString(String s) {
+        String[] Ss = new String[s.length()/8+1];
+        int scount = 0;
+        for (int i = 0; i < s.length(); i++){
+            if (s.length()-i > 8) {
+                Ss[scount] = s.substring(i, i+8);
+            }
 
-        //break into 8-bit blocks
+            else {
+                Ss[scount] = s.substring(i, s.length()) + genRand(s.length()-i);
+            }
+        }
 
-
-        //hash each block with key
-        //hash each block with the next block
-        //convert to numbers
-        //divide by 7 until <100
-
+        return Ss;
     }
+
+    protected String genRand(int l) {
+        //sends back randomly generated numbers as a string
+    }
+
+    private int hashString(String pword) {
+        //split up
+        String[] Ss = splitString(pword);
+        
+        //use key
+
+        for (int i = 0; i < Ss.length; i++) {
+            Ss[i] = (int)Ss[i] ^ 
+        }
+
+        //break into bits and re-course
+    }
+
 }
 
 
 public class hashTable extends hashArray {
     private hashArray hArr;
 
-    public hashTable(int length, int key) {
-        hArr = new hashArray(length, key);
+    public hashTable(int l, int k) {
+        hArr = new hashArray(l, k);
     }
 
     public void addString(String str) {
