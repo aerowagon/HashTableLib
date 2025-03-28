@@ -2,21 +2,44 @@
 //
 
 import java.lang.reflect.Array;
+import java.util.Random;
 
 class hashArray {
-    protected int[] arr;
-    protected int key;
+    private String[] arr;
+    private int codeKey;
+    private int a;
+    private int b;
 
-    protected hashArray(int length, int key) {
-        this.arr = new int[length];
-        this.key = key;
+    protected hashArray(int length, int codeKey) {
+        this.arr = new String[length];
+        this.codeKey = codeKey;
+
+        //initialize function specific 
+        Random rand = new Random();
+        a = rand.nextInt(length);
+        b = rand.nextInt(length);
+    }
+
+    public static void main(String[] args) {
+        
     }
 
     protected void place(String str) { //function to put information into hash array
         String bi = getNumbers(str);
-        int hash = 
+        String encoded = encodeString(bi);
+        int hashVal = hashInt(Integer.getInteger(encoded));
+        arr[hashVal] = encoded;
+    }
+    
+    protected String[] getArray() {
+        return arr;
     }
 
+    protected int arrLength() {
+        return arr.length;
+    }
+
+    //returns string of numbers where the characters were
     protected String getNumbers(String str) {
         String nums = "";
         for (int i = 0; i < str.length(); i++) {
@@ -26,6 +49,7 @@ class hashArray {
         return nums;
     }
 
+    //splits string into 64-bit chunks
     protected String[] splitString(String s) {
         String[] Ss = new String[s.length()/8+1];
         int scount = 0;
@@ -42,35 +66,60 @@ class hashArray {
         return Ss;
     }
 
-    protected String genRand(int l) {
+    private String genRand(int l) {
         //sends back randomly generated numbers as a string
-    }
+        String nums = "";
+        Random rand = new Random();
 
-    private int hashString(String pword) {
-        //split up
-        String[] Ss = splitString(pword);
-        
-        //use key
-
-        for (int i = 0; i < Ss.length; i++) {
-            Ss[i] = (int)Ss[i] ^ 
+        for (int i = 0; i < l; i++) {
+            int ran = rand.nextInt(26);
+            nums = nums + String.valueOf(ran);
         }
 
-        //break into bits and re-course
+        return nums;
     }
 
+    private String encodeString(String pword) {
+        //split up
+        String[] Ss = splitString(pword);
+        String encoded="";
+        int prev = 0;
+        
+        //use codekey to hash with current and then previous
+        for (int i =0; i < Ss.length; i++) {
+            int total = Integer.parseInt(Ss[i]) ^ codeKey;
+            if (prev != 0) {
+                total = total ^ prev;
+            }
+            encoded = encoded + String.valueOf(total);
+        }
+
+        return encoded;
+    }
+
+    private int hashInt(int pword) {
+        //put hash function here, use 5107
+        int tot = (a * pword) + b;
+        int primed = tot%5107;
+        int end = primed%arr.length;
+        return end;
+    }
 }
 
 
 public class hashTable extends hashArray {
-    private hashArray hArr;
+    protected hashArray hArr;
 
     public hashTable(int l, int k) {
-        hArr = new hashArray(l, k);
+        this.hArr = new hashArray(l, k);
     }
 
     public void addString(String str) {
         place(str);
+    }
+
+    public void removeString(String str) {
+        
     }
     
 }
