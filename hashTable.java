@@ -5,29 +5,17 @@ import java.lang.reflect.Array;
 import java.util.Random;
 
 class hashArray {
-    private String[] arr;
-    private int codeKey;
-    private int a;
-    private int b;
+    protected String[] arr;
+    protected int codeKey;
+    protected int a;
+    protected int b;
 
-    protected hashArray(int length, int codeKey) {
-        this.arr = new String[length];
-        this.codeKey = codeKey;
-
-        //initialize function specific 
-        Random rand = new Random();
-        a = rand.nextInt(length);
-        b = rand.nextInt(length);
-    }
-
-    public static void main(String[] args) {
-        
-    }
 
     protected void place(String str) { //function to put information into hash array
         String bi = getNumbers(str);
+        System.out.println(bi);
         String encoded = encodeString(bi);
-        int hashVal = hashInt(Integer.getInteger(encoded));
+        int hashVal = hashInt(encoded);
         arr[hashVal] = encoded;
     }
     
@@ -39,7 +27,7 @@ class hashArray {
         return arr.length;
     }
 
-    //returns string of numbers where the characters were
+    //returns string of numbers where the characters were. WORKS!
     protected String getNumbers(String str) {
         String nums = "";
         for (int i = 0; i < str.length(); i++) {
@@ -51,21 +39,44 @@ class hashArray {
 
     //splits string into 64-bit chunks
     protected String[] splitString(String s) {
-        String[] Ss = new String[s.length()/8+1];
+        String[] Ss = new String[(s.length()/8)+1];
         int scount = 0;
-        for (int i = 0; i < s.length(); i++){
-            if (s.length()-i > 8) {
-                Ss[scount] = s.substring(i, i+8);
+        for (int i = 0; i < Ss.length; i++){
+            if (s.length()-scount > 8) {
+                Ss[i] = s.substring(scount, scount+8);
+                scount = scount + 8;
             }
 
             else {
-                Ss[scount] = s.substring(i, s.length()) + genRand(s.length()-i);
+                Ss[i] = s.substring(scount, s.length()) + genRand(s.length()-scount);
             }
         }
 
         return Ss;
     }
 
+
+    private String encodeString(String pword) {
+        //split up
+        String[] Ss = splitString(pword);
+        String encoded="";
+        long prev = 0;
+        
+        //use codekey to hash with current and then previous
+        for (int i =0; i < Ss.length; i++) {
+            long temp = Long.valueOf(Ss[i]);
+            long total = temp ^ codeKey;
+            if (prev != 0) {
+                total = total ^ prev;
+            }
+            prev = total;
+            encoded = encoded + String.valueOf(total);
+        }
+
+        return encoded;
+
+    }
+    
     private String genRand(int l) {
         //sends back randomly generated numbers as a string
         String nums = "";
@@ -78,31 +89,22 @@ class hashArray {
 
         return nums;
     }
-
-    private String encodeString(String pword) {
-        //split up
-        String[] Ss = splitString(pword);
-        String encoded="";
-        int prev = 0;
+    
+    
+    private int hashInt(String pword) {
+        String[] s = splitString(pword);
         
-        //use codekey to hash with current and then previous
-        for (int i =0; i < Ss.length; i++) {
-            int total = Integer.parseInt(Ss[i]) ^ codeKey;
-            if (prev != 0) {
-                total = total ^ prev;
-            }
-            encoded = encoded + String.valueOf(total);
+        long primedTotal = 0;
+        
+        for (int i = 0; i < s.length; i++) {
+            long temp = Long.valueOf(s[i])%1453;
+            
+            long tot = a * temp + b;
+            primedTotal = primedTotal + tot%5107;
         }
-
-        return encoded;
-    }
-
-    private int hashInt(int pword) {
-        //put hash function here, use 5107
-        int tot = (a * pword) + b;
-        int primed = tot%5107;
-        int end = primed%arr.length;
-        return end;
+        
+        System.out.println(primedTotal);
+        return (int)primedTotal%arr.length;
     }
 }
 
@@ -110,9 +112,17 @@ class hashArray {
 public class hashTable extends hashArray {
     protected hashArray hArr;
 
-    public hashTable(int l, int k) {
-        this.hArr = new hashArray(l, k);
+    public hashTable(int length, int codeKey) {
+        this.arr = new String[length];
+        this.codeKey = codeKey;
+
+        //initialize function specific 
+        Random rand = new Random();
+        a = rand.nextInt(length);
+        b = rand.nextInt(length);
     }
+    
+    public static void main(String args[]) {}
 
     public void addString(String str) {
         place(str);
