@@ -48,7 +48,7 @@ class hashArray {
             }
 
             else {
-                Ss[i] = s.substring(scount, s.length()) + genRand(s.length()-scount);
+                Ss[i] = s.substring(scount, s.length()) + genExtras(s.length()-scount, Ss[0]);
             }
         }
 
@@ -77,14 +77,13 @@ class hashArray {
 
     }
     
-    private String genRand(int l) {
+    private String genExtras(int l, String s) {
         //sends back randomly generated numbers as a string
         String nums = "";
-        Random rand = new Random();
 
         for (int i = 0; i < l; i++) {
-            int ran = rand.nextInt(26);
-            nums = nums + String.valueOf(ran);
+            char top = s.toCharArray()[i];
+            nums = nums + top;
         }
 
         return nums;
