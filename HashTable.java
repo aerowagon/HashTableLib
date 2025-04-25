@@ -4,13 +4,22 @@
 import java.lang.reflect.Array;
 import java.util.Random;
 
-class hashArray {
+class HashArray {
     protected String[] arr;
     protected int codeKey;
     protected int a;
     protected int b;
 
 
+    protected String place(String str) { //function to put information into hash array
+        String bi = getNumbers(str);
+        ////System.out.println(bi);
+        String encoded = encodeString(bi);
+        int hashVal = hashInt(encoded);
+        arr[hashVal] = encoded;
+        return encoded;
+    }
+/*
     protected void place(String str) { //function to put information into hash array
         String bi = getNumbers(str);
         System.out.println(bi);
@@ -18,7 +27,7 @@ class hashArray {
         int hashVal = hashInt(encoded);
         arr[hashVal] = encoded;
     }
-    
+*/
     protected String[] getArray() {
         return arr;
     }
@@ -61,7 +70,7 @@ class hashArray {
         String[] Ss = splitString(pword);
         String encoded="";
         long prev = 0;
-        
+
         //use codekey to hash with current and then previous
         for (int i =0; i < Ss.length; i++) {
             long temp = Long.valueOf(Ss[i]);
@@ -76,7 +85,7 @@ class hashArray {
         return encoded;
 
     }
-    
+
     private String genExtras(int l, String s) {
         //sends back randomly generated numbers as a string
         String nums = "";
@@ -88,30 +97,30 @@ class hashArray {
 
         return nums;
     }
-    
-    
+
+
     private int hashInt(String pword) {
         String[] s = splitString(pword);
-        
+
         long primedTotal = 0;
-        
+
         for (int i = 0; i < s.length; i++) {
             long temp = Long.valueOf(s[i])%1453;
-            
+
             long tot = a * temp + b;
             primedTotal = primedTotal + tot%5107;
         }
-        
-        System.out.println(primedTotal);
+
+        ////System.out.println(primedTotal);
         return (int)primedTotal%arr.length;
     }
 }
 
 
-public class hashTable extends hashArray {
-    protected hashArray hArr;
+public class HashTable extends HashArray {
+    protected HashArray hArr;
 
-    public hashTable(int length, int codeKey) {
+    public HashTable(int length, int codeKey) {
         this.arr = new String[length];
         this.codeKey = codeKey;
 
@@ -120,15 +129,18 @@ public class hashTable extends hashArray {
         a = rand.nextInt(length);
         b = rand.nextInt(length);
     }
-    
-    public static void main(String args[]) {}
 
-    public void addString(String str) {
+    public String addString(String str) {
+        return place(str);
+    }
+    /*
+        public void addString(String str) {
         place(str);
     }
+     */
 
     public void removeString(String str) {
-        
+
     }
-    
+
 }
