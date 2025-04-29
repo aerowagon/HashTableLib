@@ -3,14 +3,19 @@ import java.util.LinkedList;
 
 public class Password {
 
-    HashTable hA = new HashTable(100, 13389436);
+    HashTable hA;
 
     LinkedList<Node>[] passwordStorage = new LinkedList[13];
     int location = 0;
 
 
 
-    public void newPassword(String word, String name){
+    public Password(HashTable hT){
+        this.hA = hT;
+
+    }
+
+    public void addPassword(String word, String name) {
         this.location = nameTwoNumber(name) % 13;
 
         String hashedWord = hA.addString(word);
