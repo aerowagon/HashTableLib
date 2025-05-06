@@ -23,7 +23,8 @@ public class Password {
         if (passwordStorage[location] == null) {
             passwordStorage[location] = new LinkedList<>();
         }
-        Node passwordNode = new Node( hashedWord, name);
+        
+        Node passwordNode = new Node(hashedWord, name);
 
         passwordStorage[location].add(passwordNode);
     }
