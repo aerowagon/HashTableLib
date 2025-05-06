@@ -24,7 +24,7 @@ public class PasswordHandler {
         System.out.println("You are at the password manager. Press 0 to enter a new password and 1 to delete password.");
         System.out.println("Enter anything else to return.");
         int i;
-        i = s.nextInt();
+        i = Integer.parseInt(s.nextLine());
         System.out.println(i);
         if (i==0) {
             addPassword();
@@ -35,7 +35,7 @@ public class PasswordHandler {
         }
 
         else {
-            admin();
+            userHandling();
         }
     }
 
@@ -68,6 +68,7 @@ public class PasswordHandler {
         unm = s.nextLine();
         System.out.println("Old password:");
         pwd = s.nextLine();
+        password.removePassword(pwd,unm);
         System.out.println("Password deleted!");
         admin();
     }
@@ -79,6 +80,7 @@ public class PasswordHandler {
         unm = s.nextLine();
         System.out.println("New password:");
         pwd = s.nextLine();
+        password.addPassword(pwd, unm);
         System.out.println("Password added!");
         admin();
     }
