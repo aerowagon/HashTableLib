@@ -19,15 +19,15 @@ class HashArray {
         arr[hashVal] = encoded;
         return encoded;
     }
-/*
-    protected void place(String str) { //function to put information into hash array
-        String bi = getNumbers(str);
-        System.out.println(bi);
-        String encoded = encodeString(bi);
-        int hashVal = hashInt(encoded);
-        arr[hashVal] = encoded;
-    }
-*/
+    /*
+        protected void place(String str) { //function to put information into hash array
+            String bi = getNumbers(str);
+            System.out.println(bi);
+            String encoded = encodeString(bi);
+            int hashVal = hashInt(encoded);
+            arr[hashVal] = encoded;
+        }
+    */
     protected String[] getArray() {
         return arr;
     }
