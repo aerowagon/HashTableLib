@@ -7,11 +7,12 @@ public class PasswordHandler {
 
     public PasswordHandler() {
         getAdmin();
+        addPassword();
         userHandling();
     }
 
     private void getAdmin() { // get admin password
-        System.out.println("Please initiate admin password:");
+        System.out.println("Please initiate admin password:  (it is 'admin')");
         AdminP.addPassword(s.nextLine(), "admin");
     }
 
@@ -78,7 +79,7 @@ public class PasswordHandler {
         String unm;
         System.out.println("New name:");
         unm = s.nextLine();
-        System.out.println("New password:");
+        System.out.println("New password (8 characters):");
         pwd = s.nextLine();
         password.addPassword(pwd, unm);
         System.out.println("Password added!");
