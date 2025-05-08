@@ -23,7 +23,7 @@ public class Password {
         if (passwordStorage[location] == null) {
             passwordStorage[location] = new LinkedList<>();
         }
-        
+
         Node passwordNode = new Node(hashedWord, name);
 
         passwordStorage[location].add(passwordNode);
@@ -41,6 +41,38 @@ public class Password {
             }
         }
         return false;
+    }
+
+    public void newPassword(String word, String name){
+        this.location = nameTwoNumber(name) % 13;
+
+        String hashedWord = hA.addString(word);
+
+        if (passwordStorage[location] == null) {
+            passwordStorage[location] = new LinkedList<>();
+        }
+        Node passwordNode = new Node( hashedWord, name);
+
+        passwordStorage[location].add(passwordNode);
+    }
+
+    public void changePassword(String oldWord, String newWord, String name){
+
+        this.location = nameTwoNumber(name) % 13;
+
+        String hashedWord = hA.addString(oldWord);
+        int length = passwordStorage[location].size();
+
+        for (int i = 0; i <length  ; i++) {
+            if( name.equals(passwordStorage[location].get(i).getName()) ) {
+                if (hashedWord.equals(passwordStorage[location].get(i).getHashvalue())) {
+                    hashedWord = hA.addString(newWord);
+                    passwordStorage[location].get(i).setHashvalue(hashedWord);
+                }
+            }
+        }
+
+
     }
 
     public void removePassword(String word, String name){
@@ -63,14 +95,14 @@ public class Password {
     }
 
 }
- class Node{
+class Node{
     String name;
     String hashvalue;
 
-     public Node(String hashedWord, String name) {
-         this.name = name;
-         this.hashvalue = hashedWord;
-     }
+    public Node(String hashedWord, String name) {
+        this.name = name;
+        this.hashvalue = hashedWord;
+    }
 
     public String getName(){
         return name;
@@ -79,12 +111,13 @@ public class Password {
     public String getHashvalue(){
         return hashvalue;
     }
-     // Used to change name
+    // Used to change name
     public void setName(){
 
     }
     // Used to change hashvalue
-    public void setHashvalue(){
+    public void setHashvalue(String hashword){
+        this.hashvalue = hashword;
 
     }
 
